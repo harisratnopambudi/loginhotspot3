@@ -1,0 +1,42 @@
+JUDUL PRODUK (Pilih salah satu):
+1. Template Login Page Hotspot Mikrotik Premium - Fitur Jadwal Sholat & Smart Banner (Auto Ganti)
+2. Script Login Page Mikrotik Responsif Kekinian - Mode Gaming & Streaming + Netflix Promo
+3. Login Page Hotspot Mikrotik Siap Pakai - Support Voucher & Member - Tampilan Mewah & Ringan
+
+DESKRIPSI PRODUK:
+
+Tingkatkan omzet penjualan WiFi voucher Anda dengan tampilan Login Page yang Profesional, Mewah, dan Interaktif!
+Template ini didesain khusus untuk memanjakan mata pelanggan, ringan dijalankan di HP kentang sekalipun, dan memiliki fitur-fitur canggih yang tidak ada di template gratisan.
+
+FITUR UNGGULAN:
+- Smart Banner Otomatis: Banner header berganti otomatis mengikuti waktu (Pagi/Siang/Sore/Malam), Mode Gaming, Mode Streaming, hingga Quote Motivasi.
+- Jadwal Sholat Real-time: Otomatis mendeteksi waktu sholat sesuai lokasi, dengan fitur Highlight (penanda) waktu sholat yang akan datang.
+- Animasi Halus & Ringan: Menggunakan CSS modern untuk efek visual yang memukau tanpa memberatkan loading (Anti Lemot).
+- Promo Popup Terintegrasi: Siap untuk promosi jualan akun premium (Netflix, Spotify, dll) atau pengumuman maintenance.
+- Daftar Paket Informatif: Layout harga paket yang rapi, mudah dibaca, dan menarik minat pembeli.
+- Copy Voucher Mudah: Fitur "Click to Copy" memudahkan user menyalin kode voucher atau info kontak.
+
+SPESIFIKASI TEKNIS:
+- Responsif 100% (Tampilan sempurna di HP, Tablet, Laptop/PC).
+- Kompatibel dengan semua jenis Router Mikrotik (haplite, RB750, dll) yang menjalankan Hotspot.
+- File ringan (< 1MB total), loading super cepat.
+- Teknologi: HTML5, CSS3, Vanilla JS (Tanpa framework berat).
+- Mudah diedit (tersedia file config.js untuk ganti nama, harga, dan teks tanpa bongkar kodingan rumit).
+
+APA YANG ANDA DAPATKAN:
+- File Source Code Lengkap (.html, .css, .js, gambar).
+- Panduan Instalasi (Text/Video jika ada).
+- Support pemasangan (Bantuan remote via Anydesk/Ultraviewer jika bingung).
+- Gratis Update jika ada versi baru (Lifetime).
+
+COCOK UNTUK:
+- Pengusaha WiFi Voucheran / RT RW Net.
+- Cafe / Warkop yang menyediakan Free WiFi/Voucher.
+- Kantor / Sekolah / Instansi.
+
+CATATAN:
+- Produk dikirim via Email / Link Download (Cantumkan email di catatan saat order).
+- Bukan jual alat/mikrotik, HANYA FILE TEMPLATE LOGIN PAGE.
+
+Stok selalu ready! Langsung checkout biar tampilan hotspotmu makin kece badai!
+#loginpage #mikrotik #hotspot #rtrwnet #templatepremium #wifi
