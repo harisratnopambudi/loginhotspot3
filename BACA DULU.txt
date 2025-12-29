@@ -1,0 +1,59 @@
+TERIMA KASIH TELAH MEMBELI PRODUK KAMI!
+
+Berikut adalah panduan singkat cara pemasangan dan konfigurasi Login Page Mikrotik ini.
+
+========================================================================
+LANGKAH 1: KONFIGURASI NAMA DAN SETTING
+========================================================================
+Sebelum diupload ke Mikrotik, silakan edit file "config.js" menggunakan Notepad atau Text Editor lainnya.
+
+Di dalam file "config.js", Anda bisa mengubah pengaturan berikut:
+
+1. licenseKey
+   - Masukkan Kode Lisensi yang kami berikan saat pembelian.
+   - Contoh: licenseKey: "KODE-LISENSI-ANDA"
+
+2. businessName
+   - Ubah menjadi nama usaha Wi-Fi / Hotspot Anda.
+   - Contoh: businessName: "Berkah Net"
+
+3. loginMode
+   - Pilih mode login yang diinginkan.
+   - Isi dengan angka 1 untuk mode Voucher/Username saja.
+   - Isi dengan angka 2 untuk mode Member (Username & Password).
+
+4. enableNetflix
+   - Fitur popup promo (Netflix/Jasa Premium).
+   - Isi dengan angka 1 untuk mengaktifkan (ON).
+   - Isi dengan angka 0 untuk mematikan (OFF).
+
+Jangan lupa SIMPAN (Save) file setelah diedit.
+
+========================================================================
+LANGKAH 2: CARA PASANG KE MIKROTIK
+========================================================================
+1. Buka aplikasi Winbox dan login ke Mikrotik Anda.
+2. Klik menu "Files" di sebelah kiri.
+3. Cari folder "hotspot" yang sedang aktif (bisa dilihat di menu IP > Hotspot > Server Profile > HTML Directory).
+4. Drag & Drop (Tarik) semua file login page ini ke dalam folder hotspot tersebut di Winbox.
+   - Jika Anda ingin membuat folder baru, pastikan nama folder sesuai.
+   - Tumpuk/Overwrite file lama jika diminta (pastikan backup dulu file lama jika perlu).
+
+5. Pastikan settingan Server Profile sudah mengarah ke folder yang benar:
+   - Masuk ke menu IP > Hotspot > Server Profiles.
+   - Klik dua kali pada profil hotspot Anda.
+   - Pada tab "General", cek bagian "HTML Directory". Pastikan mengarah ke folder tempat Anda upload file tadi.
+
+========================================================================
+LANGKAH 3: PENGUJIAN
+========================================================================
+1. Coba konek ke Wi-Fi hotspot Anda menggunakan HP atau Laptop.
+2. Seharusnya halaman login baru sudah muncul.
+3. Cek apakah nama hotspot dan fitur lainnya sudah sesuai dengan yang Anda setting di config.js.
+
+========================================================================
+BANTUAN / SUPPORT
+========================================================================
+Jika mengalami kesulitan saat pemasangan, silakan hubungi kami untuk bantuan remote (via Anydesk/Ultraviewer).
+
+Terima kasih dan semoga lancar usahanya!
