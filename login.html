@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hotspot Login</title>
+    <link rel="stylesheet" href="style.css?v=1003">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Block Screen & Essential Overlays */
+        .block-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .block-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px 32px;
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .block-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .block-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #ef4444;
+        }
+
+        .block-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .block-message {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .btn-wa {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: rgba(30, 41, 59, 0.95);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .toast.warning {
+            border-color: rgba(245, 158, 11, 0.5);
+            color: #fcd34d;
+        }
+
+        .toast.error {
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+        }
+
+        .toast.success {
+            border-color: rgba(34, 197, 94, 0.5);
+            color: #86efac;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Demo Timer */
+        .demo-timer {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fcd34d;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .demo-timer.urgent {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+            animation: pulse-red 1s infinite;
+        }
+
+        @keyframes pulse-red {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Block Screen (License Invalid) -->
+    <div id="blockScreen" class="block-screen hidden">
+        <div class="block-card">
+            <div class="block-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg></div>
+            <h2 class="block-title">Akses Ditolak</h2>
+            <p class="block-message">Portal ini tidak memiliki lisensi yang valid.<br>Silakan hubungi administrator.</p>
+            <a href="https://wa.me/6287784477751" target="_blank" class="btn-whatsapp">Hubungi Admin</a>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Demo Timer -->
+    <div id="demoTimerDisplay" class="demo-timer hidden">
+        <svg style="width:16px;height:16px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span id="demoTimerText">DEMO MODE: 15s</span>
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div id="mainContent">
+
+
+
+        <!-- Header (Clock & Prayer) -->
+        <header class="header-display">
+            <div class="brand-logo" id="businessTitle">AshrafHotspot</div>
+            <div class="clock-huge" id="clockData">--:--</div>
+            <div class="date-pill">
+                <span id="dateGregorian">Memuat...</span>
+                <span class="divider">•</span>
+                <span id="dateHijri">...</span>
+            </div>
+            <div class="prayer-scroll-container">
+                <div class="prayer-times-scroll" id="prayerTimes"></div>
+            </div>
+        </header>
+
+        <!-- Slideshow (Between Header & Sheet) -->
+        <!-- Login Sheet -->
+        <main class="login-sheet">
+            <div class="sheet-handle"></div>
+
+            <div class="login-content" id="loginCard">
+                <!-- Slideshow -->
+                <div class="slideshow-container" style="margin-bottom: 20px;">
+                    <div class="slides-wrapper">
+                        <!-- Slide 0: Dynamic Greeting -->
+                        <div class="slide">
+                            <div class="banner-slide grad-morning" id="greetingSlide">
+                                <div class="banner-content">
+                                    <h3 id="greetTitle">Selamat Pagi</h3>
+                                    <p id="greetDesc"><em>Semangat</em> beraktivitas hari ini!</p>
+                                    <span class="banner-badge" id="greetBadge">AshrafHotspot</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Slide 1: Dynamic Package (Rotates) -->
+                        <div class="slide">
+                            <div class="banner-slide grad-1" id="packageSlide">
+                                <div class="banner-content">
+                                    <h3 id="pkgTitle">PAKET INTERNET</h3>
+                                    <p id="pkgDesc">Pilihan Paket <em>Hemat & Cepat</em></p>
+                                    <span class="banner-badge" id="pkgBadge">Cek Menu Paket</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="slide">
+                            <div class="banner-slide grad-3">
+                                <div class="banner-content">
+                                    <h3>INFO LAYANAN</h3>
+                                    <p>Jika ada kendala <em>hubungi admin</em></p>
+                                    <span class="banner-badge">WA: 0877-8447-7751</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Slide 4 -->
+                        <div class="slide">
+                            <div class="banner-slide grad-4">
+                                <div class="banner-content">
+                                    <h3>PRODUK DIGITAL</h3>
+                                    <p>Token PLN, <em>E-Wallet</em>, & <em>Transfer Bank</em></p>
+                                    <span class="banner-badge">Tersedia Disini</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Slide 5 -->
+                        <div class="slide">
+                            <div class="banner-slide grad-netflix">
+                                <div class="banner-content">
+                                    <h3>NETFLIX PREMIUM</h3>
+                                    <p><em>Auto Household & OTP</em> - Otomatis Tanpa Admin</p>
+                                    <span class="banner-badge">Rp 50.000 / Bulan</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Welcome/Business Title -->
+                <div class="text-center mb-4">
+                    <h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; color: white;">Selamat
+                        Datang
+                    </h1>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Akses internet cepat & stabil</p>
+                </div>
+
+                <!-- Error Msg -->
+                <div style="color: #ef4444; text-align: center; font-size: 0.85rem; margin-bottom: 16px;">
+                    $(if error)<p>$(error)</p>$(endif)
+                </div>
+
+                <!-- Form -->
+                <form name="login" action="$(link-login-only)" method="post" id="loginForm">
+                    <input type="hidden" name="dst" value="$(link-orig)">
+                    <input type="hidden" name="popup" value="true">
+
+                    <div class="form-group">
+                        <input type="text" name="username" class="input-tech" placeholder="Kode Voucher"
+                            value="$(username)" autocomplete="off" required
+                            oninput="this.value = this.value.toLowerCase()" style="text-transform: lowercase;">
+                    </div>
+                    <div class="form-group" id="passwordField">
+                        <input type="password" name="password" class="input-tech" placeholder="Password"
+                            autocomplete="off">
+                    </div>
+
+                    <div style="position: relative;">
+                        <button type="submit" class="btn-tech" id="submitBtn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                            </svg>
+                            <span id="submitBtnText">Masuk / Login</span>
+                        </button>
+                        <div id="cooldownOverlay" class="cooldown-overlay">
+                            <span class="cooldown-text">...</span>
+                        </div>
+                    </div>
+                </form>
+
+                <p style="text-align: center; margin-top: 16px; font-size: 0.8rem; color: var(--text-muted);">
+                    Belum punya voucher? <a href="menu.html" style="color: var(--primary); font-weight: 600;">Lihat
+                        Paket</a>
+                </p>
+
+                <footer class="footer-mini">&copy; 2025 Haris DevLab. All rights reserved.</footer>
+            </div>
+        </main>
+
+        <!-- Floating Nav Dock (Moved outside for Fixed positioning) -->
+        <div class="nav-dock">
+            <a href="login.html?v=1003" class="nav-item active">
+                <div class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    </svg></div>
+                <span>Login</span>
+            </a>
+            <a href="menu.html?v=1003" class="nav-item">
+                <div class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg></div>
+                <span>Paket</span>
+            </a>
+            <a href="info.html?v=1003" class="nav-item">
+                <div class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg></div>
+                <span>Info</span>
+            </a>
+            <a href="contact.html?v=1003" class="nav-item">
+                <div class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg></div>
+                <span>Kontak</span>
+            </a>
+        </div>
+    </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="praytimes.js"></script>
+    <script src="config.js?v=1001"></script>
+    <script src="script.js"></script>
+    <script>
+        /* Developer: Haris DevLab Co. - Protected Script PRESERVED */
+        (function () {
+            'use strict';
+            console.log('Developer by Haris Ratno Pambudi');
+
+            // ═══════════════════════════════════════════════════════════
+            // CORE SYSTEM (PROTECTED)
+            // ═══════════════════════════════════════════════════════════
+
+            // Obfuscated Constants & Utilities
+            const _0x5a1 = ['\x44\x45\x4d\x4f\x2d\x56\x41\x4c\x49\x44\x2d\x4b\x45\x59', 'warning', 'error', 'success', 'show', 'hidden', 'urgent', 'DEMO MODE', 'DEMO LIMIT: Recovering...', 'DEMO READY'];
+            const _0xSec = '\x48\x4f\x54\x53\x50\x4f\x54\x5f\x50\x4f\x52\x54\x41\x4c\x5f\x53\x45\x43\x52\x45\x54\x5f\x32\x30\x32\x35';
+
+            const _0xH = (str) => {
+                let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+                for (let i = 0; i < str.length; i++) {
+                    const ch = str.charCodeAt(i);
+                    h1 = Math.imul(h1 ^ ch, 2654435761);
+                    h2 = Math.imul(h2 ^ ch, 1597334677);
+                }
+                return (4294967296 * (2097151 & (Math.imul(h2 ^ (Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul((Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909)) >>> 13, 3266489909)) >>> 16, 2246822507))) + ((Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909)) >>> 0)).toString(16).padStart(16, '0');
+            };
+            const _0xM = (k, s) => { const i = _0xH(k + s); return _0xH(s + i + k) + i; };
+            const _0xSig = ['5a7c3e9f1b4d8a2c9e1f3b5d7a2c4e6f', '1c8e5f3a9b2d4c7e6f8a0b1d3e5c7a9b'];
+
+            // Core Validation (Obfuscated)
+            function _0xV(_k) {
+                // Developer by Haris Ratno Pambudi
+                const _dev = "Haris Ratno Pambudi";
+                if (!_k) return false;
+                const _tk = _k.trim();
+                // Check Demo Key
+                if (_tk === _0x5a1[0]) return true;
+                // HMAC Check
+                if (_0xSig.includes(_0xM(_tk, _0xSec))) return true;
+                // Regex
+                if (/^[A-Z0-9@#$%&*\-_+=!?]{28}$/.test(_tk)) return true;
+                return false;
+            }
+
+            // Integrity Check (Obfuscated)
+            function _0xI() {
+                try {
+                    // Self-Verify
+                    const _s = _0xV.toString().replace(/\s/g, '');
+                    if (!_s.includes('_0xM') || !_s.includes('_0xSig')) return false;
+                    // Check for variable usage instead of literal content
+                    if (!_s.includes('_0x5a1[0]')) return false;
+                    // Check Developer Credit
+                    if (!_s.includes('HarisRatnoPambudi')) return false;
+
+                    const _r = ['blockScreen', 'loginCard', 'loginForm'];
+                    for (let _i of _r) if (!document.getElementById(_i)) return false;
+                    return true;
+                } catch (e) { return false; }
+            }
+
+            // Toast Helper
+            function showToast(message, type = 'error') {
+                const container = document.getElementById('toastContainer');
+                if (!container) return;
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                const icons = {
+                    error: '<svg class="toast-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>',
+                    success: '<svg class="toast-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>',
+                    warning: '<svg class="toast-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>'
+                };
+                toast.innerHTML = `${icons[type] || icons.error}<span>${message}</span>`;
+                container.appendChild(toast);
+                setTimeout(() => { toast.classList.add('hiding'); setTimeout(() => toast.remove(), 300); }, 4000);
+            }
+
+            // Anti-Inspect
+            function disableInspect() {
+                document.addEventListener('contextmenu', (e) => e.preventDefault());
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) || (e.ctrlKey && e.key.toUpperCase() === 'U')) {
+                        e.preventDefault(); return false;
+                    }
+                });
+            }
+
+            // INITIALIZATION
+            function init() {
+                if (!_0xI()) {
+                    document.getElementById('blockScreen').classList.remove('hidden');
+                    document.getElementById('blockScreen').querySelector('.block-message').textContent = 'File portal telah dimodifikasi (E01). Gunakan versi asli.';
+                    return;
+                }
+
+                const licenseKey = (typeof BUYER_CONFIG !== 'undefined' && BUYER_CONFIG.licenseKey) ? BUYER_CONFIG.licenseKey : '';
+
+                if (_0xV(licenseKey)) {
+                    // Demo Mode Logic
+                    if (licenseKey === _0x5a1[0]) {
+                        (function () {
+                            const _elD = document.getElementById('demoTimerDisplay');
+                            const _elT = document.getElementById('demoTimerText');
+                            const _ov = document.getElementById('cooldownOverlay');
+                            const _btn = document.getElementById('submitBtn');
+                            _elD.classList.remove(_0x5a1[5]);
+                            let _c = 15; let _r = false;
+
+                            _elT.textContent = `${_0x5a1[7]}: ${_c}s`;
+                            showToast(`${_0x5a1[7]} ACTIVATED`, _0x5a1[1]);
+
+                            setInterval(() => {
+                                _c--;
+                                if (_r) {
+                                    _elT.textContent = `RECOVERING: ${_c}s`;
+                                    _elD.classList.add(_0x5a1[6]);
+                                    if (!_ov.classList.contains('show')) {
+                                        _ov.classList.add('show');
+                                        document.querySelector('.cooldown-text').innerHTML = 'Mode Demo: Sedang cooling down...<br><span style="font-size:0.85em; opacity:0.8; display:block; margin-top:4px;">Hubungi admin dan gunakan license key yang valid</span>';
+                                        _btn.disabled = true;
+                                    }
+                                } else {
+                                    _elT.textContent = `${_0x5a1[7]}: ${_c}s`;
+                                    _elD.classList.remove(_0x5a1[6]);
+                                    if (_c <= 3) _elD.classList.add(_0x5a1[6]);
+                                    if (_ov.classList.contains('show')) {
+                                        _ov.classList.remove('show');
+                                        _btn.disabled = false;
+                                    }
+                                }
+                                if (_c <= 0) {
+                                    _r = !_r;
+                                    if (_r) { _c = 60; showToast(_0x5a1[8], _0x5a1[2]); }
+                                    else { _c = 15; showToast(_0x5a1[9], _0x5a1[3]); }
+                                }
+                            }, 1000);
+                        })();
+                    }
+
+                    document.getElementById('mainContent').classList.remove('hidden');
+                    document.getElementById('loginCard').classList.remove('hidden');
+                    disableInspect();
+
+                    // Init Form Custom Logic
+                    if (typeof BUYER_CONFIG !== 'undefined' && BUYER_CONFIG.loginMode === 1) {
+                        const _pF = document.getElementById('passwordField');
+                        if (_pF) _pF.style.display = 'none';
+                        const _form = document.getElementById('loginForm');
+                        if (_form) {
+                            _form.addEventListener('submit', function (e) {
+                                const _usr = _form.username.value;
+                                _form.password.value = _usr;
+                            });
+                        }
+                    }
+
+                } else {
+                    document.getElementById('blockScreen').classList.remove('hidden');
+                }
+            }
+
+            if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+            else { init(); }
+
+        })();
+    </script>
+</body>
+
+</html>
